@@ -6,6 +6,7 @@ from enum import Enum
 class AccountType(Enum):
     ADHERENTE = "adherente"
     HUMANE = "humane"
+
 @dataclass
 class AccountData:
     name: str

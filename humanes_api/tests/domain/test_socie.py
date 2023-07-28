@@ -19,7 +19,7 @@ def create_new_account(type: str = "adherente", activated: bool = True) -> Accou
         phone=''.join(random.choice(numbers) for _ in range(length)),
         email=''.join(random.choice(letters) for _ in range(length)),
     )
-    account = Account(account_data=AccountData, socie_type=type, activated=activated)
+    account = Account(account_data=account_data, socie_type=type, activated=activated)
     return account
 
 
