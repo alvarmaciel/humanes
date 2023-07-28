@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String, Table, ForeignKey, Boolean
-from sqlalchemy.orm import registry, mapper, relationship
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Table
+from sqlalchemy.orm import mapper, registry, relationship
+
 from humanes_api.humanes.domain import socies
 
 mapper_registry = registry()

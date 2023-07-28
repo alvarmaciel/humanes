@@ -1,8 +1,9 @@
-import string
 import random
+import string
 from datetime import date
-from humanes_api.humanes.domain.socies import AccountData, Account
-from humanes_api.humanes.domain.cash_register import CashRegister, Cashier
+
+from humanes_api.humanes.domain.cash_register import Cashier, CashRegister
+from humanes_api.humanes.domain.socies import Account, AccountData
 
 
 def create_new_account(type: str = "adherente", activated: bool = True) -> Account:

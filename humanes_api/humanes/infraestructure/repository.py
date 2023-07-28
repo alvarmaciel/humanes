@@ -1,6 +1,6 @@
 from typing import Protocol, TypeVar, Union, runtime_checkable
 
-from humanes_api.humanes.domain.socies import AccountData, Account
+from humanes_api.humanes.domain.socies import Account, AccountData
 
 T = TypeVar('T', bound=Union[AccountData, Account])
 @runtime_checkable
@@ -24,8 +24,8 @@ class AccountDataRepository:
     def list(self):
         return self.session.query(Account).all()
 
-class AccountRepository:
 
+class AccountRepository:
     def __int__(self, session):
         self.session = session
 
@@ -37,5 +37,3 @@ class AccountRepository:
 
     def list(self):
         return self.session.query(AccountData).all()
-
-
