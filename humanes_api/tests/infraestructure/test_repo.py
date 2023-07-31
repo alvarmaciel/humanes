@@ -35,12 +35,8 @@ def test_repository_can_save_an_account_data(session):
 
 def test_repository_can_get_saved_account_data(session):
     # Setup
-    import ipdb
-
-    ipdb.set_trace()
-
-    accounts_data_id = insert_account_data(session)
-    reference = "1234"
+    accounts_ids = insert_account_data(session)
+    reference = accounts_ids[0][0]
 
     # Exercise
     repo = repository.AccountDataRepository(session)
@@ -62,22 +58,22 @@ def test_repository_can_get_saved_account_data(session):
 
 def test_repository_can_list_saved_account_data(session):
     # Setup
-    accounts_data = insert_account_data(session)
+    accounts_ids = insert_account_data(session)
     # Exercise
     repo = repository.AccountDataRepository(session)
     retrieved = repo.list()
 
     # Verify
-    assert len(retrieved) == len(accounts_data)
+    assert len(retrieved) == len(accounts_ids)
 
 
 def test_repository_can_save_an_account(session):
     # Setup
     account_data = AccountData("a name", "a last name", "", "123456", "1245", "an address", "+5468", "an email")
     fees = [
-        {"date": date(2022, 1, 1), "amount": 100},
-        {"date": date(2022, 2, 1), "amount": 100},
-        {"date": date(2022, 2, 1), "amount": 100},
+        {"date": date(2022, 1, 1).isoformat(), "amount": 100},
+        {"date": date(2022, 2, 1).isoformat(), "amount": 100},
+        {"date": date(2022, 2, 1).isoformat(), "amount": 100},
     ]
     account = Account(
         account_data=account_data,
@@ -90,34 +86,69 @@ def test_repository_can_save_an_account(session):
     )
     # Exercise
     repo_account_data = repository.AccountDataRepository(session)
-    repo_account_data.add(account_data)
+    repo_account_data.add(account_data)  # Save account data first
+
     repo_account = repository.AccountRepository(session)
+    repo_account.add(account)  # Save the full account
+
     session.commit()
 
     # Verify
-    import ipdb
-
-    ipdb.set_trace()
-    query_account_data = text("SELECT name, last_name, venture, dni FROM 'accounts_data'")
+    query_account_data = text("SELECT * FROM accounts_data")
     results_account_data = session.execute(query_account_data).fetchall()
-    query_account = text("SELECT name, last_name, venture, dni FROM 'accounts_data'")
+
+    assert len(results_account_data) == 1
+    assert results_account_data == [
+        (1, "a name", "a last name", "", "123456", "1245", "an address", "+5468", "an email")
+    ]
+
+    query_account = text("SELECT * FROM accounts")
     results_account = session.execute(query_account).fetchall()
-    assert results_account_data == [("a name", "a last name", "", "123456")]
+    assert len(results_account) == 1
+    assert results_account == [
+        (
+            1,
+            1,
+            "humane",
+            '[{"date": "2022-01-01", "amount": 100}, {"date": "2022-02-01", "amount": 100}, {"date": "2022-02-01", "amount": 100}]',
+            "[]",
+            1,
+            1,
+            0,
+        )
+    ]
 
 
 def test_repository_can_get_saved_account(session):
     # Setup
+
     insert_account_data(session)
-    reference = '1234'
+    repo_account_data = repository.AccountDataRepository(session)
+    account_data = repo_account_data.get(1)
+    fees = [
+        {"date": date(2022, 1, 1).isoformat(), "amount": 100},
+        {"date": date(2022, 2, 1).isoformat(), "amount": 100},
+        {"date": date(2022, 2, 1).isoformat(), "amount": 100},
+    ]
+    account = Account(
+        account_data=account_data,
+        socie_type="humane",
+        fees=fees,
+        invoices=[],
+        activated=True,
+        socie=True,
+        provider=False,
+    )
+    repo_account = repository.AccountRepository(session)
+    repo_account.add(account)  # Save the full account
+    session.commit()
 
     # Exercise
-    repo = repository.AccountDataRepository(session)
-    retrieved = repo.get(reference)
+    reference = "1"
+    retrieved = repo_account.get(reference)
 
     # Verify
-    expected = AccountData(name='Gideon', last_name='Nav', venture='', dni='1234', zip_code='234',
-                           address='ninth house', phone='1234', email='gideon_rocks@theninth.com')
-    assert retrieved == expected
+    assert retrieved == account
 
 
 def test_repository_can_list_saved_account(session):
