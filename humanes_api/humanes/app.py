@@ -1,7 +1,7 @@
 import settings
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
-
+from sqlalchemy.exc import ArgumentError
 from humanes.domain.socies import Account
 from humanes.infraestructure.database import SessionLocal
 
@@ -19,15 +19,16 @@ async def get_db():
 
 # Endpoint to check the health of the API
 @app.get("/health")
-async def health_check():
+def health_check():
     return {"status": "healthy"}
 
 
 @app.get("/socies", response_model=list[Account])
-async def list_socies(db: Session = Depends(get_db)):
-    accounts = db.query(Account).all()
-
-    if not accounts:
-        return {"error": "Account data not found."}
-
-    return accounts
+def list_socies(db: Session = Depends(get_db)):
+    try:
+        accounts = db.query(Account).all()
+        if not accounts:
+            return {"error": "Account data not found."}
+        return accounts
+    except Exception:
+        raise HTTPException(status_code=404, detail="Socies not found")

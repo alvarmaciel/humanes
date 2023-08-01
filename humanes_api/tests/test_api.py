@@ -15,6 +15,15 @@ def test_api_returns_account(given_three_accounts):
     assert response.json() == expected_accounts()
 
 
+def test_appi_returns_400_if_no_data():
+    client = TestClient(app)
+    # Excrcise
+    response = client.get("/socies")
+    # Verify
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Socies not found"}
+
+
 def expected_accounts():
     return [
         {
