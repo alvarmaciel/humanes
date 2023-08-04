@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from humanes.infraestructure.entity_mapping import mapper_registry
+from humanes_api.humanes.infraestructure.entity_mapping import mapper_registry
 
 DATABASE_URL = "sqlite:///./humanes_socies.db"
 

@@ -2,7 +2,7 @@ import random
 import string
 from datetime import date
 
-from humanes_api.humanes.domain.cash_register import Cashier, CashRegister
+from humanes_api.humanes.domain.cash_register import CashRegister, Cashier
 from humanes_api.humanes.domain.socies import Account, AccountData
 
 
@@ -29,7 +29,7 @@ def test_create_socie():
     assert isinstance(new_socie, Account)
 
 
-def test_socie_activatesd_is_false_when_last_fee_more_that_3_month_of_today():
+def test_socie_activated_is_false_when_last_fee_more_that_3_month_of_today():
     # Setup
     new_socie = create_new_account()
     socie_fee_payed = [

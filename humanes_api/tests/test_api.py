@@ -1,8 +1,8 @@
 from fastapi.testclient import TestClient
-from humanes.app import app
+from humanes_api.humanes.app import app
 
 
-def test_api_returns_account(given_three_accounts):
+def test_api_returns_account(given_three_accounts, session):
     # Setup
     accounts = given_three_accounts
     assert len(accounts) == 3
@@ -15,7 +15,7 @@ def test_api_returns_account(given_three_accounts):
     assert response.json() == expected_accounts()
 
 
-def test_appi_returns_400_if_no_data():
+def test_api_returns_400_if_no_data():
     client = TestClient(app)
     # Excrcise
     response = client.get("/socies")
@@ -23,6 +23,35 @@ def test_appi_returns_400_if_no_data():
     assert response.status_code == 404
     assert response.json() == {"detail": "Socies not found"}
 
+
+def test_api_get_status_deactivated(given_three_accounts, session):
+    # Setup
+    accounts = given_three_accounts
+    assert len(accounts) == 3
+    client = TestClient(app)
+    # # Exercise
+    # response = client.get(f"/socies/get_status/{accounts[0].id}")
+    # # Verify
+    expected = {
+        "account_data": {
+            "name": "Gideon",
+            "last_name": "Nav",
+            "venture": "",
+            "dni": "1234",
+            "zip_code": "234",
+            "address": "ninth house",
+            "phone": "1234",
+            "email": "gideon_rocks@theninth.com",
+        },
+        "socie_type": "humane",
+        "fees": None,
+        "invoices": None,
+        "activated": False,
+        "socie": True,
+        "provider": False,
+    }
+    # assert response.status_code == 200
+    # assert response.json() == expected
 
 def expected_accounts():
     return [

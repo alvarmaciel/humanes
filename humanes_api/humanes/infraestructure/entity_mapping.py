@@ -1,7 +1,7 @@
 from sqlalchemy import JSON, Boolean, Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import mapper, registry, relationship
 
-from humanes.domain.socies import Account, AccountData
+from humanes_api.humanes.domain.socies import Account, AccountData
 
 mapper_registry = registry()
 

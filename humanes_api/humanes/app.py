@@ -1,15 +1,15 @@
-import settings
+import humanes_api.settings
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import ArgumentError
-from humanes.domain.socies import Account
-from humanes.infraestructure.database import SessionLocal
+from humanes_api.humanes.domain.socies import Account
+from humanes_api.humanes.infraestructure.database import SessionLocal
 
 app = FastAPI()
 
 
 # Dependency
-async def get_db():
+def get_db():
     db = SessionLocal()
     try:
         yield db
@@ -32,3 +32,25 @@ def list_socies(db: Session = Depends(get_db)):
         return accounts
     except Exception:
         raise HTTPException(status_code=404, detail="Socies not found")
+
+
+@app.get("/socies/get_status/{socie_id}")
+def get_status(db: Session = Depends(get_db)):
+    return {
+        "account_data": {
+            "name": "Gideon",
+            "last_name": "Nav",
+            "venture": "",
+            "dni": "1234",
+            "zip_code": "234",
+            "address": "ninth house",
+            "phone": "1234",
+            "email": "gideon_rocks@theninth.com",
+        },
+        "socie_type": "humane",
+        "fees": None,
+        "invoices": None,
+        "activated": False,
+        "socie": True,
+        "provider": False,
+    }
