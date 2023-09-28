@@ -40,3 +40,12 @@ repos:
         - black==23.3.0
         - ruff==0.0.277
       stages: [commit, manual]
+    - id: ruff
+      name: ruff
+      entry: "ruff --check --config pyproject.toml"
+      language: python
+      types: [file, python]
+      # these versions need to be the kept the same as those in requirements/requirements-lint.in
+      additional_dependencies:
+        - ruff==0.0.277
+      stages: [commit, manual]
