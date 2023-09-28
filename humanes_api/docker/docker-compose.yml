@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mutual_humanes_humanes-api:
+    build:
+      context: ../../
+      dockerfile: humanes_api/docker/Dockerfile
+    image: mutual_humanes_humanes-api
+    ports:
+      - "8000:8000"
+    environment:
+      APP_CODE: /src
+      APP_LOCAL_PATH: ./humanes_api
+    container_name: mutual_humanes_humanes-api
+    volumes:
+      - ${TEMP:-/tmp}:/tmp
+      - ../../humanes_api:/src/application
+
+networks:
+    default:
+        name: mutual_humanes

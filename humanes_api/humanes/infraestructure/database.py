@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-from humanes_api.humanes.infraestructure.entity_mapping import mapper_registry
+from humanes.infraestructure.entity_mapping import mapper_registry, start_mappers
 
 DATABASE_URL = "sqlite:///./humanes_socies.db"
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+start_mappers()
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

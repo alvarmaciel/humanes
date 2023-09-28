@@ -1,4 +1,3 @@
-import settings
 from humanes.domain.socies import Account, AccountData
 from humanes.infraestructure.database import DATABASE_URL, SessionLocal
 from sqlalchemy import create_engine

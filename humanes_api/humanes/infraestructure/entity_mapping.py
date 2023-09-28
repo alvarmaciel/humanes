@@ -1,7 +1,7 @@
 from sqlalchemy import JSON, Boolean, Column, ForeignKey, Integer, String, Table
 from sqlalchemy.orm import mapper, registry, relationship
+from humanes.domain.socies import Account, AccountData
 
-from humanes_api.humanes.domain.socies import Account, AccountData
 
 mapper_registry = registry()
 
@@ -25,16 +25,18 @@ accounts_tbl = Table(
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("account_data_id", Integer, ForeignKey("accounts_data.id"), nullable=False),
     Column("socie_type", String(20)),
-    Column("fees", JSON),
-    Column("invoices", JSON),
+    Column("fees", JSON, nullable=True),
+    Column("invoices", JSON, nullable=True),
     Column("activated", Boolean, default=True),
     Column("socie", Boolean, default=True),
     Column("provider", Boolean, default=False),
 )
 
-mapper_registry.map_imperatively(
-    AccountData,
-    accounts_data_tbl,
-    properties={"accounts": relationship(Account, backref="account_data", order_by=accounts_tbl.c.id)},
-)
-mapper_registry.map_imperatively(Account, accounts_tbl)
+
+def start_mappers():
+    mapper_registry.map_imperatively(Account, accounts_tbl)
+    mapper_registry.map_imperatively(
+        AccountData,
+        accounts_data_tbl,
+        properties={"accounts": relationship(Account, backref="account_data", order_by=accounts_tbl.c.id)},
+    )

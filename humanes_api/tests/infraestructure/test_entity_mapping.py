@@ -1,6 +1,6 @@
 from sqlalchemy import text
 
-from humanes_api.humanes.domain import socies
+from humanes.domain import socies
 
 
 def test_account_mapper_can_load_account_data(session):
@@ -17,7 +17,17 @@ def test_account_mapper_can_load_account_data(session):
                            "harrowhack_nonagesimuss@theninth.com"),
         socies.AccountData('Ianthe', 'Thridentarus', '', '1234', '234', 'third house', '1234', 'ianthe@theninth.com'),
     ]
-    assert session.query(socies.AccountData).all() == expected
+    retrieved = session.query(socies.AccountData).all()
+
+    for r, e in zip(retrieved, expected):
+        assert r.name == e.name
+        assert r.last_name == e.last_name
+        assert r.venture == e.venture
+        assert r.dni == e.dni
+        assert r.zip_code == e.zip_code
+        assert r.address == e.address
+        assert r.phone == e.phone
+        assert r.email == e.email
 
 
 def test_account_mapper_can_load_account(session):
@@ -31,9 +41,9 @@ def test_account_mapper_can_load_account(session):
 
     query_account = (
         "INSERT INTO accounts (account_data_id, socie_type, fees, invoices, activated, socie, provider) VALUES "
-        "(1, 'humane', '','',1, 1, 0), "
-        "(2, 'adherente', '','',1, 1, 0), "
-        "(3, 'humane', '','',1, 1, 0)"
+        "(1, 'humane', NULL,NULL,1, 1, 0), "
+        "(2, 'adherente', NULL,NULL,1, 1, 0), "
+        "(3, 'humane', NULL,NULL,1, 1, 0)"
     )
 
     # Exercise
@@ -42,6 +52,8 @@ def test_account_mapper_can_load_account(session):
 
     stmt_account = text(query_account)
     session.execute(stmt_account)
+    session.commit()
+
 
     # Verify
     expected_accounts_data = [
@@ -62,9 +74,16 @@ def test_account_mapper_can_load_account(session):
     assert accounts_data == expected_accounts_data
 
     expected_accounts = [
-        socies.Account(expected_accounts_data[0], "humane", "", "", 1, 1, 0),
-        socies.Account(expected_accounts_data[1], "adherente", "", "", 1, 1, 0),
-        socies.Account(expected_accounts_data[2], "humane", "", "", 1, 1, 0),
+        socies.Account(expected_accounts_data[0], "humane", None, None, 1, 1, 0),
+        socies.Account(expected_accounts_data[1], "adherente", None, None, 1, 1, 0),
+        socies.Account(expected_accounts_data[2], "humane", None, None, 1, 1, 0),
     ]
-
-    assert session.query(socies.Account).all() == expected_accounts
+    retrived_accounts = session.query(socies.Account).all()
+    for r, e in zip(retrived_accounts, expected_accounts):
+        assert r.account_data == e.account_data
+        assert r.socie_type == e.socie_type
+        assert r.fees == e.fees
+        assert r.invoices == e.invoices
+        assert r.activated == e.activated
+        assert r.socie == e.socie
+        assert r.provider == e.provider

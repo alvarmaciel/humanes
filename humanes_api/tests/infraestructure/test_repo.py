@@ -2,8 +2,8 @@ from datetime import date
 
 from sqlalchemy import text
 
-from humanes_api.humanes.domain.socies import Account, AccountData
-from humanes_api.humanes.infraestructure import repository
+from humanes.domain.socies import Account, AccountData
+from humanes.infraestructure import repository
 
 
 def insert_account_data(session):

@@ -1,9 +1,7 @@
-import humanes_api.settings
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import ArgumentError
-from humanes_api.humanes.domain.socies import Account
-from humanes_api.humanes.infraestructure.database import SessionLocal
+from humanes.domain.socies import Account
+from humanes.infraestructure.database import SessionLocal
 
 app = FastAPI()
 
@@ -22,6 +20,10 @@ def get_db():
 def health_check():
     return {"status": "healthy"}
 
+
+@app.get("/")
+def home():
+    return f"Humanes API de Socies"
 
 @app.get("/socies", response_model=list[Account])
 def list_socies(db: Session = Depends(get_db)):

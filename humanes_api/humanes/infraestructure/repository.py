@@ -1,6 +1,6 @@
 from typing import Protocol, TypeVar, Union, runtime_checkable
 
-from humanes_api.humanes.domain.socies import Account, AccountData
+from humanes.domain.socies import Account, AccountData
 
 T = TypeVar('T', bound=Union[AccountData, Account])
 
