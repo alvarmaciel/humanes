@@ -7,10 +7,19 @@ from humanes.infraestructure import repository
 
 
 def insert_account_data(session):
-    insert = "INSERT INTO accounts_data (name, last_name, venture, dni, zip_code, address, phone, email) VALUES " \
-             "('Gideon', 'Nav', '', '1234', '234', 'ninth house', '1234', 'gideon_rocks@theninth.com'), " \
-             "('Harrowhack', 'Nonagesimus', '', '12345', '234', 'ninth house', '1235', 'harrowhack_nonagesimuss@theninth.com'), " \
-             "('Ianthe', 'Thridentarus', '', '12346', '234', 'third house', '2234', 'ianthe@theninth.com')"
+    base_query = "INSERT INTO accounts_data (name, last_name, venture, dni, zip_code, address, phone, email) VALUES "
+
+    values = [
+        "('Gideon', 'Nav', '', '1234', '234', 'ninth house', '1234', 'gideon_rocks@theninth.com')",
+        (
+            "('Harrowhack', 'Nonagesimus', '', '12345', '234', 'ninth house', "
+            "'1235', 'harrowhack_nonagesimuss@theninth.com')"
+        ),
+        "('Ianthe', 'Thridentarus', '', '12346', '234', 'third house', '2234', 'ianthe@theninth.com')",
+    ]
+
+    insert = base_query + ", ".join(values)
+
     stmt = text(insert)
     session.execute(stmt)
     query = text("SELECT id FROM accounts_data")
@@ -110,7 +119,7 @@ def test_repository_can_save_an_account(session):
             1,
             1,
             "humane",
-            '[{"date": "2022-01-01", "amount": 100}, {"date": "2022-02-01", "amount": 100}, {"date": "2022-02-01", "amount": 100}]',
+            '[{"date": "2022-01-01", "amount": 100}, {"date": "2022-02-01", "amount": 100}, {"date": "2022-02-01", "amount": 100}]',  # noqa E501
             "[]",
             1,
             1,

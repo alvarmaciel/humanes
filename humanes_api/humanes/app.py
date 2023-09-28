@@ -23,7 +23,7 @@ def health_check():
 
 @app.get("/")
 def home():
-    return f"Humanes API de Socies"
+    return "Humanes API de Socies"
 
 @app.get("/socies", response_model=list[Account])
 def list_socies(db: Session = Depends(get_db)):

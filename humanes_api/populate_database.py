@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 
 
 def populate_database():
-    engine = create_engine(DATABASE_URL)
+    create_engine(DATABASE_URL)
     with SessionLocal() as session:
         # Check if the database is already populated
         existing_account_data = session.query(AccountData).all()

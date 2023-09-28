@@ -1,5 +1,5 @@
 from sqlalchemy import JSON, Boolean, Column, ForeignKey, Integer, String, Table
-from sqlalchemy.orm import mapper, registry, relationship
+from sqlalchemy.orm import registry, relationship
 from humanes.domain.socies import Account, AccountData
 
 

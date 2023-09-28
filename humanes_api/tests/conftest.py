@@ -1,7 +1,6 @@
 import pytest
 from sqlalchemy import create_engine, text
-from sqlalchemy.orm import clear_mappers, sessionmaker
-import settings
+from sqlalchemy.orm import sessionmaker
 from humanes.infraestructure.entity_mapping import mapper_registry
 
 @pytest.fixture
@@ -26,7 +25,7 @@ def add_accounts(session):
     query_account_data = (
         "INSERT INTO accounts_data (name, last_name, venture, dni, zip_code, address, phone, email) VALUES "
         "('Gideon', 'Nav', '', '1234', '234', 'ninth house', '1234', 'gideon_rocks@theninth.com'), "
-        "('Harrowhack', 'Nonagesimus', '', '1234', '234', 'ninth house', '1234', 'harrowhack_nonagesimuss@theninth.com'), "
+        "('Harrowhack', 'Nonagesimus', '', '1234', '234', 'ninth house', '1234', 'harrowhack_nonagesimuss@theninth.com'), "  # noqa E501
         "('Ianthe', 'Thridentarus', '', '1234', '234', 'third house', '1234', 'ianthe@theninth.com')"
     )
 

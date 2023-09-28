@@ -54,7 +54,7 @@ def test_api_returns_account(given_three_accounts, session):
     """
     # Setup: Create three accounts
     client = TestClient(app)
-    repo = AccountRepository(session)
+    AccountRepository(session)
     # Exercise
     response = client.get("/socies/")
     # Verify
