@@ -1,21 +1,30 @@
 from sqlalchemy import text
-
 from humanes.domain import socies
 
 
-def test_account_mapper_can_load_account_data(session):
-    query = "INSERT INTO accounts_data (name, last_name, venture, dni, zip_code, address, phone, email) VALUES " \
-            "('Gideon', 'Nav', '', '1234', '234', 'ninth house', '1234', 'gideon_rocks@theninth.com'), " \
-            "('Harrowhack', 'Nonagesimus', '', '1234', '234', 'ninth house', '1234', 'harrowhack_nonagesimuss@theninth.com'), " \
-            "('Ianthe', 'Thridentarus', '', '1234', '234', 'third house', '1234', 'ianthe@theninth.com')"
+def test_account_mapper_can_load_account_data(session):  # noqa E501
+    query = (
+        "INSERT INTO accounts_data (name, last_name, venture, dni, zip_code, address, phone, email) VALUES "
+        "('Gideon', 'Nav', '', '1234', '234', 'ninth house', '1234', 'gideon_rocks@theninth.com'), "
+        "('Harrowhack', 'Nonagesimus', '', '1234', '234', 'ninth house', '1234', 'harrowhack_nonagesimuss@theninth.com'), "  # noqa E501
+        "('Ianthe', 'Thridentarus', '', '1234', '234', 'third house', '1234', 'ianthe@theninth.com')"
+    )
     stmt = text(query)
     session.execute(stmt)
 
     expected = [
         socies.AccountData("Gideon", "Nav", "", "1234", "234", "ninth house", "1234", "gideon_rocks@theninth.com"),
-        socies.AccountData("Harrowhack", "Nonagesimus", "", "1234", "234", "ninth house", "1234",
-                           "harrowhack_nonagesimuss@theninth.com"),
-        socies.AccountData('Ianthe', 'Thridentarus', '', '1234', '234', 'third house', '1234', 'ianthe@theninth.com'),
+        socies.AccountData(
+            "Harrowhack",
+            "Nonagesimus",
+            "",
+            "1234",
+            "234",
+            "ninth house",
+            "1234",
+            "harrowhack_nonagesimuss@theninth.com",
+        ),
+        socies.AccountData("Ianthe", "Thridentarus", "", "1234", "234", "third house", "1234", "ianthe@theninth.com"),
     ]
     retrieved = session.query(socies.AccountData).all()
 
@@ -35,7 +44,7 @@ def test_account_mapper_can_load_account(session):
     query_account_data = (
         "INSERT INTO accounts_data (name, last_name, venture, dni, zip_code, address, phone, email) VALUES "
         "('Gideon', 'Nav', '', '1234', '234', 'ninth house', '1234', 'gideon_rocks@theninth.com'), "
-        "('Harrowhack', 'Nonagesimus', '', '1234', '234', 'ninth house', '1234', 'harrowhack_nonagesimuss@theninth.com'), "
+        "('Harrowhack', 'Nonagesimus', '', '1234', '234', 'ninth house', '1234', 'harrowhack_nonagesimuss@theninth.com'), "  # noqa E501
         "('Ianthe', 'Thridentarus', '', '1234', '234', 'third house', '1234', 'ianthe@theninth.com')"
     )
 
@@ -53,7 +62,6 @@ def test_account_mapper_can_load_account(session):
     stmt_account = text(query_account)
     session.execute(stmt_account)
     session.commit()
-
 
     # Verify
     expected_accounts_data = [

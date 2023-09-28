@@ -42,7 +42,7 @@ repos:
       stages: [commit, manual]
     - id: ruff
       name: ruff
-      entry: "ruff --check --config pyproject.toml"
+      entry: "ruff --config pyproject.toml"
       language: python
       types: [file, python]
       # these versions need to be the kept the same as those in requirements/requirements-lint.in
