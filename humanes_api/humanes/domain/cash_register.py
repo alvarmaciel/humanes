@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from decimal import Decimal
-from humanes_api.humanes.domain.socies import Account
+from humanes.domain.socies import Account
 @dataclass
 class CashRegister:
     total: Decimal = 0

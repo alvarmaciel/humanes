@@ -1,8 +1,9 @@
-import string
 import random
+import string
 from datetime import date
-from humanes_api.humanes.domain.socies import AccountData, Account
-from humanes_api.humanes.domain.cash_register import CashRegister, Cashier
+
+from humanes.domain.cash_register import CashRegister, Cashier
+from humanes.domain.socies import Account, AccountData
 
 
 def create_new_account(type: str = "adherente", activated: bool = True) -> Account:
@@ -19,7 +20,7 @@ def create_new_account(type: str = "adherente", activated: bool = True) -> Accou
         phone=''.join(random.choice(numbers) for _ in range(length)),
         email=''.join(random.choice(letters) for _ in range(length)),
     )
-    account = Account(account_data=AccountData, socie_type=type, activated=activated)
+    account = Account(account_data=account_data, socie_type=type, activated=activated)
     return account
 
 
@@ -28,7 +29,7 @@ def test_create_socie():
     assert isinstance(new_socie, Account)
 
 
-def test_socie_activatesd_is_false_when_last_fee_more_that_3_month_of_today():
+def test_socie_activated_is_false_when_last_fee_more_that_3_month_of_today():
     # Setup
     new_socie = create_new_account()
     socie_fee_payed = [

@@ -2,36 +2,63 @@
 name = "humanes_app"
 version = "0.1"
 
+# pytest
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::SyntaxWarning",
+    "ignore::DeprecationWarning",
+    "ignore::Warning",
+    # TODO: MySQL/SQLAlchemy raise this generic warning but it's better to avoid
+    "ignore::Warning",
+]
+addopts = "-s -vv --color=no --durations=20"
+
 [tool.black]
-target-version = ["py38"]
 line-length = 120
 color = true
 
-[tool.darker]
-# :PRE-COMMIT: is a magical revision identifier that allows darker to compare the right revisions
-# when running under pre-commit.
-#
-# See: https://github.com/akaihola/darker
-revision = ":PRE-COMMIT:"
-lint = [
-    "ruff --config pyproject.toml --fixable I001 --fix",
-]
-
 [tool.ruff]
-target-version = "py38"
+# Enable the pycodestyle (`E`) and Pyflakes (`F`) rules by default.
+# Unlike Flake8, Ruff doesn't enable pycodestyle warnings (`W`) or
+# McCabe complexity (`C901`) by default.
+select = ["E", "F"]
+ignore = []
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+per-file-ignores = {}
+
+# Same as Black.
 line-length = 120
 
-select = ["E", "F", "W", "I", "C", "UP", "RUF"]
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
-ignore = [
-    "E501",  # covered by black
-    ]
-unfixable = ["F401"]  # autofixing unused imports is dangerous
-extend-select = ["RUF100"]  # warn about `# noqa` comments that are no longer needed
-ignore-init-module-imports = true
-
-[tool.ruff.mccabe]
-max-complexity = 12
-
-[tool.ruff.isort]
-extra-standard-library = ["typing_extensions"]
+# Assume Python 3.8
+target-version = "py38"

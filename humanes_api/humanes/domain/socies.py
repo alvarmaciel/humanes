@@ -1,11 +1,14 @@
 from dataclasses import dataclass, field
 from datetime import date
 from enum import Enum
+from typing import Dict, List, Optional
 
 
 class AccountType(Enum):
     ADHERENTE = "adherente"
     HUMANE = "humane"
+
+
 @dataclass
 class AccountData:
     name: str
@@ -21,8 +24,8 @@ class AccountData:
 class Account:
     account_data: AccountData
     socie_type: AccountType = field(default=None)
-    fees: list[dict] = field(default_factory=list)
-    invoices: list[dict] = field(default_factory=list)
+    fees: Optional[List[Dict]] = field(default_factory=list)
+    invoices: Optional[List[Dict]] = field(default_factory=list)
     activated: bool = field(default=True)
     socie: bool = field(default=True)
     provider: bool = field(default=False)
